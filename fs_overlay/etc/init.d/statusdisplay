@@ -1,0 +1,49 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:          statusdisplay
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start splash screen at boot time
+# Description:       Enable display service for openHAB.
+### END INIT INFO
+
+GPIO_NUM=589
+
+case "$1" in
+  start)
+  # Export the backlight gpio and enable the backlight
+  echo $GPIO_NUM > /sys/class/gpio/export
+  echo "out" > /sys/class/gpio/gpio$GPIO_NUM/direction
+  echo "1" > /sys/class/gpio/gpio589/value
+
+  # Start psplash tool
+  /usr/local/bin/psplash -n --fbdev 0
+        ;;
+  stop)
+  killall psplash
+
+  echo "in" > /sys/class/gpio/gpio$GPIO_NUM/direction
+  echo $GPIO_NUM > /sys/class/gpio/unexport
+        ;;
+
+  reload|force-reload)
+        ;;
+
+  restart)
+        ;;
+
+  try-restart)
+        ;;
+
+  status)
+        ;;
+
+  *)
+        log_action_msg "Usage: /etc/init.d/statusdisplay {start|stop|reload|force-reload|restart|try-restart|status}" || true
+        exit 1
+esac
+
+exit 0
