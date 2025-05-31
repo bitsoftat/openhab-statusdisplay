@@ -16,7 +16,10 @@ install_backlight() {
   echo "gpio=18=op,dh" >> /boot/firmware/config.txt
 
   # Install the init service to export the gpio18
-  
+  cd $INSTALL_TMP
+  wget https://raw.githubusercontent.com/bitsoftat/openhab-statusdisplay/refs/heads/main/fs_overlay/etc/init.d/statusdisplay
+  mv statusdisplay /etc/init.d
+  chmod +x /etc/init.d/statusdisplay
 }
 
 # install_backlight_service() {}
