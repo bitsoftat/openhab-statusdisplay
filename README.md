@@ -1,4 +1,4 @@
-# openhab-statusdisplay
+# openHAB Status Display
 
 ## How to install?
 
