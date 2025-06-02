@@ -29,14 +29,17 @@ install_psplash() {
   
   # Download the psplash file with openHAB logo embedded
   wget https://github.com/mllapps/psplash-openhab/releases/download/$PSPLASH_TAG/psplash
-  # sha256:8b66a57deee86b959605e66eb7a34b79fedd07a32da806dbbf208a2b7f379720
+  #wget https://github.com/mllapps/psplash-openhab/releases/download/$PSPLASH_TAG/psplash.sha256sum
+  #sha256sum -c "psplash.sha256sum"
+  mv psplash /usr/local/bin
+  chmod +x /usr/local/bin/psplash
 
+  
   wget https://github.com/mllapps/psplash-openhab/releases/download/$PSPLASH_TAG/psplash-write
-  # sha256:c81d074cbf5970dda44fc5a0ac6071c342b25742607be02480caacf940da1644
-
+  #wget https://github.com/mllapps/psplash-openhab/releases/download/$PSPLASH_TAG/psplash-write.sha256sum
+  #sha256sum -c "psplash-write.sha256sum"
   mv psplash /usr/local/bin
   mv psplash-write /usr/local/bin
-  chmod +x /usr/local/bin/psplash
   chmod +x /usr/local/bin/psplash-write
 }
 
@@ -49,6 +52,11 @@ install_psplash_systemd() {
 }
 
 #install_openhab_command_whitelist() {}
+
+enable_psplash_systemd() {
+  systemctl enable psplash-start
+  systemctl start psplash-start
+}
 
 # Start and inform for root access required
 if [ "$(id -u)" -ne 0 ]; then
@@ -64,3 +72,4 @@ install_fbtft
 install_backlight
 install_psplash
 install_psplash_systemd
+enable_psplash_systemd
