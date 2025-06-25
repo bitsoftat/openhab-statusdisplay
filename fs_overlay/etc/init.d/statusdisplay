@@ -20,7 +20,7 @@ case "$1" in
   echo "1" > /sys/class/gpio/gpio589/value
 
   # Start psplash tool
-  /usr/local/bin/psplash -n --fbdev 0
+  /usr/local/bin/xsplash -platform linuxfb > /dev/null &
         ;;
   stop)
   killall psplash
