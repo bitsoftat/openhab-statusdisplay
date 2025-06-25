@@ -14,6 +14,9 @@ GPIO_NUM=589
 
 case "$1" in
   start)
+  export QT_QPA_FB_TSLIB=1
+  export TSLIB_TSDEVICE=/dev/input/event1
+
   # Export the backlight gpio and enable the backlight
   echo $GPIO_NUM > /sys/class/gpio/export
   echo "out" > /sys/class/gpio/gpio$GPIO_NUM/direction
