@@ -9,6 +9,7 @@ install_fbtft() {
   echo "dtoverlay=fbtft,spi10,st7789v,bgr,reset_pin=27,dc_pin=25,rotate=180" >> /boot/firmware/config.txt
 }
 
+# Install touch driver, dtb overlay and packages to use as keyboard
 install_touch() {
   apt-get install libudev libinput libxkbcommon-dev
 }
