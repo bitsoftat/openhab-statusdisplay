@@ -10,7 +10,7 @@ install_fbtft() {
 }
 
 install_touch() {
-  apt-get install libxkbcommon-dev
+  apt-get install libudev libinput libxkbcommon-dev
 }
 
 install_backlight() {
