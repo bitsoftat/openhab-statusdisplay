@@ -9,7 +9,9 @@ install_fbtft() {
   echo "dtoverlay=fbtft,spi10,st7789v,bgr,reset_pin=27,dc_pin=25,rotate=180" >> /boot/firmware/config.txt
 }
 
-# install_touch() {}
+install_touch() {
+  apt-get install libxkbcommon-dev
+}
 
 install_backlight() {
   # Enable the backlight on power on / boot
@@ -24,7 +26,7 @@ install_backlight() {
 
 # install_backlight_service() {}
 
-install_psplash() {
+install_xsplash() {
   cd $INSTALL_TMP
   
   # Download the psplash file with openHAB logo embedded
@@ -43,7 +45,7 @@ install_psplash() {
   chmod +x /usr/local/bin/psplash-write
 }
 
-install_psplash_systemd() {
+install_xsplash_systemd() {
   cd $INSTALL_TMP
   wget https://raw.githubusercontent.com/mllapps/psplash-openhab/refs/tags/$PSPLASH_TAG/psplash-start.service
 
@@ -53,7 +55,7 @@ install_psplash_systemd() {
 
 #install_openhab_command_whitelist() {}
 
-enable_psplash_systemd() {
+enable_xsplash_systemd() {
   systemctl enable psplash-start
   systemctl start psplash-start
 }
@@ -69,7 +71,8 @@ echo "root access accepted."
 mkdir -p $INSTALL_TMP
 
 install_fbtft
+install_touch
 install_backlight
-install_psplash
-install_psplash_systemd
-enable_psplash_systemd
+install_xsplash
+install_xsplash_systemd
+enable_xsplash_systemd
