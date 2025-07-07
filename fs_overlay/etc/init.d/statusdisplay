@@ -20,8 +20,12 @@ case "$1" in
   # Export the backlight gpio and enable the backlight
   echo $GPIO_NUM > /sys/class/gpio/export
   echo "out" > /sys/class/gpio/gpio$GPIO_NUM/direction
-  echo "1" > /sys/class/gpio/gpio589/value
-
+  echo "1" > /sys/class/gpio/$GPIO_NUM/value
+  
+  mkdir -p /run/xsplash
+  mkfifo /run/xsplash/mkfifo
+  chmod 0666 /run/xsplash/mkfifo
+  
   # Start psplash tool
   /usr/local/bin/xsplash -platform linuxfb > /dev/null &
         ;;
