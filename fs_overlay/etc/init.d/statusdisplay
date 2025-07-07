@@ -22,17 +22,17 @@ case "$1" in
 
         mkdir -p /run/xsplash
 
+        # Create a fifo with permissions to write
         if [ ! -p "$PIPE_PATH" ]; then
-          mkfifo $PIPE_PATH
+          mkfifo -m 0666 $PIPE_PATH
         fi
-        chmod 0666 /run/xsplash/mkfifo
 
         # Start psplash tool
         #/usr/local/bin/psplash -n --fbdev 0
 	;;
   stop)
         killall psplash
-        echo $GPIO_NUM > /sys/class/gpio/unexport
+        #gpioget gpiochip0 18
 	;;
 
   reload|force-reload)
