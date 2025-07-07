@@ -18,6 +18,11 @@ install_backlight() {
   # Enable the backlight on power on / boot
   echo "gpio=18=op,dh" >> /boot/firmware/config.txt
 
+  # Append for easy handling
+  echo "alias blon='gpioset gpiochip0 18=1'" >> /home/openhabian/.bash_aliases 
+  echo "alias bloff='gpioset gpiochip0 18=0'" >> /home/openhabian/.bash_aliases 
+
+
   # Install the init service to export the gpio18
   cd $INSTALL_TMP
   wget https://raw.githubusercontent.com/bitsoftat/openhab-statusdisplay/refs/heads/main/fs_overlay/etc/init.d/statusdisplay
