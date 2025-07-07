@@ -6,51 +6,51 @@
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start splash screen at boot time
+# Short-Description: Start xplash screen at boot time
 # Description:       Enable display service for openHAB.
 ### END INIT INFO
 
-GPIO_NUM=589
+GPIO_NUM=18
+PIPE_PATH="/run/xsplash/mkfifo"
+
+. /lib/lsb/init-functions
 
 case "$1" in
   start)
-  export QT_QPA_FB_TSLIB=1
-  export TSLIB_TSDEVICE=/dev/input/event1
+        # Export the backlight gpio and enable the backlight
+        gpioset gpiochip0 $GPIO_NUM=1
 
-  # Export the backlight gpio and enable the backlight
-  echo $GPIO_NUM > /sys/class/gpio/export
-  echo "out" > /sys/class/gpio/gpio$GPIO_NUM/direction
-  echo "1" > /sys/class/gpio/$GPIO_NUM/value
-  
-  mkdir -p /run/xsplash
-  mkfifo /run/xsplash/mkfifo
-  chmod 0666 /run/xsplash/mkfifo
-  
-  # Start psplash tool
-  /usr/local/bin/xsplash -platform linuxfb > /dev/null &
-        ;;
+        mkdir -p /run/xsplash
+
+        if [ ! -p "$PIPE_PATH" ]; then
+          mkfifo $PIPE_PATH
+        fi
+        chmod 0666 /run/xsplash/mkfifo
+
+        # Start psplash tool
+        #/usr/local/bin/psplash -n --fbdev 0
+	;;
   stop)
-  killall psplash
-
-  echo "in" > /sys/class/gpio/gpio$GPIO_NUM/direction
-  echo $GPIO_NUM > /sys/class/gpio/unexport
-        ;;
+        killall psplash
+        echo $GPIO_NUM > /sys/class/gpio/unexport
+	;;
 
   reload|force-reload)
-        ;;
+	;;
 
   restart)
-        ;;
+	;;
 
   try-restart)
-        ;;
+	;;
 
   status)
-        ;;
+        log_action_msg "statusdisplay OK"
+	;;
 
   *)
-        log_action_msg "Usage: /etc/init.d/statusdisplay {start|stop|reload|force-reload|restart|try-restart|status}" || true
-        exit 1
+	log_action_msg "Usage: /etc/init.d/statusdisplay {start|stop|reload|force-reload|restart|try-restart|status}" || true
+	exit 1
 esac
 
 exit 0
